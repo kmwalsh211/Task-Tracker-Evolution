@@ -60,6 +60,7 @@ public class MovieController {
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Movie> create(@RequestBody Movie movie) {
+        System.out.println(movie);
         // Validate Title
         if (movie.getTitle() == null || movie.getTitle().isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -75,8 +76,8 @@ public class MovieController {
         long id = ID_SEQ.getAndIncrement();
         Movie toSave = new Movie();
         toSave.setId(id);
-        toSave.setTitle(Movie.getTitle());
-        toSave.setDescription(Movie.getDescription());
+        toSave.setTitle(movie.getTitle());
+        toSave.setDescription(movie.getDescription());
         toSave.setWatched(movie.isWatched());
         // Keep server-controlled createdAt from constructor; do not override from client
 
@@ -94,6 +95,7 @@ public class MovieController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Movie> update(@PathVariable Long id, @RequestBody Movie update) {
         Movie existing = STORE.get(id);
+        System.out.println(update);
         if (existing == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

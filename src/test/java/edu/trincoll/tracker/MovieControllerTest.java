@@ -63,12 +63,13 @@ class MovieControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(testMovie)))
                     .andExpect(status().isCreated());
+            System.out.println(objectMapper.writeValueAsString(testMovie));
             
             // Now get all Movies
             mockMvc.perform(get("/api/Movies"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
-                    .andExpect(jsonPath("$[?(@.Name == 'Test Movie')]").exists());
+                    .andExpect(jsonPath("$[?(@.title == 'Test Movie')]").exists());
         }
     }
     
@@ -97,7 +98,7 @@ class MovieControllerTest {
             // Get the specific Movie
             mockMvc.perform(get("/api/Movies/{id}", createdMovie.getId()))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.Title").value("Specific Movie"))
+                    .andExpect(jsonPath("$.title").value("Specific Movie"))
                     .andExpect(jsonPath("$.description").value("Specific Description"));
         }
         
@@ -125,7 +126,7 @@ class MovieControllerTest {
                     .content(objectMapper.writeValueAsString(newMovie)))
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.id").exists())
-                    .andExpect(jsonPath("$.Name").value("New Movie"))
+                    .andExpect(jsonPath("$.title").value("New Movie"))
                     .andExpect(jsonPath("$.description").value("New Description"));
         }
         
@@ -211,9 +212,9 @@ class MovieControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(updatedMovie)))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.Title").value("Updated Title"))
+                    .andExpect(jsonPath("$.title").value("Updated Title"))
                     .andExpect(jsonPath("$.description").value("Updated Description"))
-                    .andExpect(jsonPath("$.completed").value(true));
+                    .andExpect(jsonPath("$.watched").value(true));
         }
         
         @Test
@@ -248,7 +249,8 @@ class MovieControllerTest {
             Movie createdMovie = objectMapper.readValue(response, Movie.class);
             
             // Try to update with invalid data
-            String invalidUpdate = "{\"Title\":\"\",\"description\":\"Valid Description\"}";
+            String invalidUpdate = """
+                    {"title":"","description":"Valid Description"}""";
             
             mockMvc.perform(put("/api/Movies/{id}", createdMovie.getId())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -336,8 +338,8 @@ class MovieControllerTest {
                     .param("Title", "App"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(2)))
-                    .andExpect(jsonPath("$[?(@.Title == 'Apple')]").exists())
-                    .andExpect(jsonPath("$[?(@.Title == 'Application')]").exists());
+                    .andExpect(jsonPath("$[?(@.title == 'Apple')]").exists())
+                    .andExpect(jsonPath("$[?(@.title == 'Application')]").exists());
         }
     }
 }

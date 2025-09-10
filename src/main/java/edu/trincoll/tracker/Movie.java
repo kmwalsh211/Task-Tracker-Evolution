@@ -26,14 +26,13 @@ public class Movie {
     // TODO: Replace these example fields with your domain-specific fields
     @NotBlank(message = "Title is required")
     @Size(min = 1, max = 100, message = "Title must be between 1 and 100 characters")
-    
-    private static String description;
-    private static LocalDateTime createdAt;
-    private static String title;
-    private static String director;
-    private static int year;
-    private static int rating;
-    private static boolean watched;
+    private String title;
+    private String description;
+    private LocalDateTime createdAt;
+    private String director;
+    private int year;
+    private int rating;
+    private boolean watched;
     
     // Constructor
     public Movie(String description, String title, String director, int year, int rating, boolean watched) {
@@ -47,9 +46,9 @@ public class Movie {
     }
 
     public Movie(){
-        description = "default";
+        //description = "default";
         createdAt = LocalDateTime.now();
-        title = "default";
+        //title = "default";
         director = "default";
         year = 0;
         rating = 0;
@@ -67,11 +66,11 @@ public class Movie {
         this.id = id;
     }
     
-    public static String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public static String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -143,9 +142,9 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Item{" +
+        return "Movie{" +
                 "id=" + id +
-                ", name='" + title + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
                 ", completed=" + watched +
