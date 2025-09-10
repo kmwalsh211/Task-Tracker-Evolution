@@ -27,19 +27,33 @@ public class Movie {
     @NotBlank(message = "Title is required")
     @Size(min = 1, max = 100, message = "Title must be between 1 and 100 characters")
     
-    private String description;
-    private LocalDateTime createdAt;
-    private boolean completed;
-    private String title;
-    private String director;
-    private int year;
-    private int rating;
-    private boolean watched;
+    private static String description;
+    private static LocalDateTime createdAt;
+    private static String title;
+    private static String director;
+    private static int year;
+    private static int rating;
+    private static boolean watched;
     
     // Constructor
-    public Movie() {
+    public Movie(String description, String title, String director, int year, int rating, boolean watched) {
+        this.description = description;
         this.createdAt = LocalDateTime.now();
-        this.completed = false;
+        this.title = title;
+        this.director = director;
+        this.year = year;
+        this.rating = rating;
+        this.watched = watched;
+    }
+
+    public Movie(){
+        description = "default";
+        createdAt = LocalDateTime.now();
+        title = "default";
+        director = "default";
+        year = 0;
+        rating = 0;
+        watched = false;
     }
     
     // TODO: Generate getters and setters for all your fields
@@ -53,11 +67,11 @@ public class Movie {
         this.id = id;
     }
     
-    public String getDescription() {
+    public static String getDescription() {
         return description;
     }
 
-    public String getTitle() {
+    public static String getTitle() {
         return title;
     }
 
@@ -88,14 +102,6 @@ public class Movie {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-    
-    public boolean isCompleted() {
-        return completed;
-    }
-    
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -124,7 +130,7 @@ public class Movie {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return completed == movie.completed &&
+        return watched == movie.watched &&
                Objects.equals(id, movie.id) &&
                Objects.equals(title, movie.title) &&
                Objects.equals(description, movie.description);
@@ -132,7 +138,7 @@ public class Movie {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, completed);
+        return Objects.hash(id, title, description, watched);
     }
 
     @Override
@@ -142,7 +148,7 @@ public class Movie {
                 ", name='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
-                ", completed=" + completed +
+                ", completed=" + watched +
                 '}';
     }
 }
